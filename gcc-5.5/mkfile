@@ -1,0 +1,49 @@
+pkg = gcc-5.5
+ver = 5.5.0
+url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
+
+sha256sum = 530cea139d82fe542b358961130c69cfde8b3d14556370b65823d2f91f0ced87
+
+<../default.mk
+
+CONFIGURE = \
+    --target=$CHOST \
+	--host=$CHOST \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--with-system-zlib \
+	--disable-nls \
+	--disable-multilib \
+	--disable-libquadmath \
+	--disable-werror \
+	--enable-tls \
+	--enable-deterministic-archives \
+	--disable-libmudflap \
+	--disable-libsanitizer \
+	--disable-gnu-indirect-function \
+	--disable-libmpx \
+	--enable-libstdcxx-time \
+	--enable-languages=c,c++ \
+	--enable-__cxa_atexit
+
+
+build:QV: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	CC="gcc" \
+	CXX="c++98" \
+	CC_FOR_TARGET="gcc" \
+	CXX_FOR_TARGET="c++98" \
+	CFLAGS="-g0 -Os" \
+	CXXFLAGS="-g0 -Os" \
+	LDFLAGS="-s" \
+	../configure $CONFIGURE
+	make $MAKEFLAGS -j${NPROC}
+
+install:QV: build
+	cd $WORK/$pkg-$ver/build
+	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man
+

@@ -1,0 +1,33 @@
+pkg = perl
+ver = 5.26.1
+url = http://www.cpan.org/src/5.0/$pkg-$ver.tar.gz
+sha256sum = e763aa485e8dc1a70483dbe6d615986bbf32b977f38016480d68c99237e701dd
+
+<../default.mk
+
+CONFIGURE = -des -Dusethreads -Duseshrplib -Dusesoname -Dusevendorprefix \
+		-Duselargefiles -Dd_semctl_semun \
+		-Dprefix=/usr -Dvendorprefix=/usr \
+		-Dprivlib=/usr/share/perl5/core_perl \
+		-Darchlib=/usr/lib/perl5/core_perl \
+		-Dsitelib=/usr/share/perl5/site_perl \
+		-Dsitearch=/usr/lib/perl5/site_perl \
+		-Dvendorlib=/usr/share/perl5/vendor_perl \
+		-Dvendorarch=/usr/lib/perl5/vendor_perl \
+		-Dscriptdir=/usr/bin -Dvendorscript=/usr/bin \
+		-Dinc_version_list=none -Dman1ext=1p -Dman3ext=3p \
+		-Dman1dir=/usr/share/man/man1 \
+		-Dman3dir=/usr/share/man/man3 \
+		-Dd_sockaddr_in6=define \
+		-Uusedl
+
+
+build:QV: fetch patch
+        cd $WORK/$pkg-$ver
+        ./Configure $CONFIGURE \
+		-Dcc="${CC}" \
+		-Doptimize="${CFLAGS}" \
+		-Dccflags="${CFLAGS}" \
+		-Dldflags="${LDFLAGS}" \
+		-Dlocincpth=/usr/include
+        make

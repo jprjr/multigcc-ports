@@ -1,0 +1,17 @@
+pkg = linux-headers
+ver = 4.4.10
+url = https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.10.tar.xz
+
+sha256sum = 4ac22e4a619417213cfdab24714413bb9118fbaebe6012c6c89c279cdadef2ce
+
+<../default.mk
+
+build:QV: fetch patch
+	cd $WORK/$pkg-$ver
+	make mrproper
+
+install:QV: build
+	mkdir -p $destdir/usr
+	cd $WORK/$pkg-$ver
+	make INSTALL_HDR_PATH=$destdir/usr headers_install
+

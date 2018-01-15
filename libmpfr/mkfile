@@ -1,0 +1,8 @@
+pkg = libmpfr
+ver = 3.1.6
+url = http://www.mpfr.org/mpfr-$ver/mpfr-$ver.tar.xz
+
+sha256sum = 7a62ac1a04408614fccdc506e4844b10cf0ad2c2b1677097f8f35d3a1344a950
+
+<../default.mk
+

@@ -1,0 +1,25 @@
+pkg = ncurses
+ver = 6.0
+url = https://ftp.gnu.org/gnu/ncurses/ncurses-$ver.tar.gz
+sha256sum = f551c24b30ce8bfb6e96d9f59b42fbea30fa3a6123384172f9e7284bcf647260
+
+<../default.mk
+
+CONFIGURE = $CONFIGURE \
+	--without-ada \
+	--disable-rpath-hack \
+	--with-pkg-config-libdir=/usr/lib/pkgconfig \
+	--with-termlib=tinfo --with-ticlib=tic \
+	--without-cxx-binding \
+	--with-terminfo-dirs="/etc/terminfo:/usr/share/terminfo" \
+	--enable-pc-files \
+	--with-shared \
+	--enable-widec
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} DESTDIR=$destdir install
+	ln -s libncursesw.so $destdir/usr/lib/libncurses.so
+	ln -s libncursesw.a  $destdir/usr/lib/libncurses.a
+

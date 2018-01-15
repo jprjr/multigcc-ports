@@ -1,0 +1,30 @@
+pkg = boost
+ver = 1.66.0
+url = https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+sha256sum = 5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	./bootstrap.sh --with-toolset=gcc --with-python=/usr/bin/python2
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	./b2 \
+	  variant=release \
+	  debug-symbols=off \
+	  threading=multi \
+	  runtime-link=shared \
+	  link=shared,static \
+	  toolset=gcc \
+	  python=2.7 \
+	  cflags="-fPIC -g0 -Os" \
+	  cxxflags="-fPIC -g0 -Os -std=c++14" \
+	  linkflags="-s" \
+	  --layout=system \
+	  --prefix=$destdir/usr \
+	  -j${NPROC} \
+	  install
+

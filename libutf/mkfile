@@ -1,0 +1,46 @@
+pkg = libutf
+ver = 2.0
+
+<../config.mk
+
+srcdir  = `{pwd}
+destdir = `{printf '%s/%s/' "$STAGE" "$pkg-$ver"}
+tarball = ${REPO}/$pkg@$ver.tgz
+
+$tarball:Q:
+	mk fetch build install cleanup
+	cd $destdir
+	mkdir -p $(dirname $tarball)
+	find . -printf '%P\0' | LC_ALL=C sort -z | \
+	GZIP=-9n ${TAR} --null --no-recursion --files-from=- --owner=root --group=root --numeric-owner \
+	--mode=go=rX,u+rw,a-s -czf $tarball
+	printf '\n\t%s\n\n' "$tarball"
+
+build:V: fetch
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} PREFIX=/usr
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} PREFIX=$destdir/usr install
+
+cleanup:V: install
+	cd $destdir
+	test -n "$CLEANUP" && rm -r $CLEANUP
+	find . -name '*.la'   | xargs -r rm
+
+# fetch the source
+fetch:QV:
+    mkdir -p $WORK
+	cp -r "$srcdir/src" $WORK/$pkg-$ver
+
+
+# delete everything but the pack
+clean:V:
+	rm -rf $WORK
+	rm -rf $destdir
+
+# remove the pack
+distclean:V: clean
+	rm -f $tarball

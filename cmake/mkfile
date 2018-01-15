@@ -1,0 +1,15 @@
+pkg = cmake
+ver = 3.10.1
+url = https://cmake.org/files/v3.10/cmake-$ver.tar.gz
+sha256sum = 7be36ee24b0f5928251b644d29f5ff268330a916944ef4a75e23ba01e7573284
+
+<../default.mk
+
+
+CONFIGURE = --prefix=/usr \
+            --mandir=/usr/share/man \
+			--system-curl \
+			--system-zlib \
+			--system-bzip2 \
+			--system-liblzma \
+			--system-libarchive

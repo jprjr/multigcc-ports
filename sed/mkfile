@@ -1,0 +1,6 @@
+pkg = sed
+ver = 4.4
+url = https://ftp.gnu.org/gnu/sed/sed-$ver.tar.xz
+sha256sum = cbd6ebc5aaf080ed60d0162d7f6aeae58211a1ee9ba9bb25623daa6cd942683b
+
+<../default.mk

@@ -1,0 +1,7 @@
+pkg = findutils
+ver = 4.6.0
+url =  https://ftp.gnu.org/gnu/findutils/findutils-$ver.tar.gz
+sha256sum = ded4c9f73731cd48fec3b6bdaccce896473b6d8e337e9612e16cf1431bb1169d
+
+<../default.mk
+

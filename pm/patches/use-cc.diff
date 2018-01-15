@@ -1,0 +1,17 @@
+diff --git a/config.mk b/config.mk
+index b5cd6c7..881a328 100644
+--- a/config.mk
++++ b/config.mk
+@@ -1,8 +1,8 @@
+-CC = cc
+-LD = ${CC}
++CC = gcc
++LD = gcc
+ 
+-PREFIX = /usr/local
+-MANDIR = ${PREFIX}/man
++PREFIX = /usr
++MANDIR = ${PREFIX}/share/man
+ 
+ CPPFLAGS = -DREPOAWARE
+ CFLAGS = -Wall -Wextra -pedantic

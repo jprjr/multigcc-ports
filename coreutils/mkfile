@@ -1,0 +1,12 @@
+pkg = coreutils
+ver = 8.29
+url =  https://ftp.gnu.org/gnu/coreutils/coreutils-$ver.tar.xz
+sha256sum = 92d0fa1c311cacefa89853bdb53c62f4110cdfda3820346b59cbd098f40f955e
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	test -f configure && FORCE_UNSAFE_CONFIGURE=1 ./configure $CONFIGURE
+	make -j${NPROC}
+

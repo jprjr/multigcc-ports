@@ -1,0 +1,7 @@
+pkg = xz
+ver = 5.2.3
+url = https://tukaani.org/xz/$pkg-$ver.tar.gz
+sha256sum = 71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb
+
+<../default.mk
+

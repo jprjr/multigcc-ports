@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+declare -a ARGS
+for var in "$@" ; do
+    if [[ "$var" == "-std="* ]] ; then
+        continue
+    fi
+    ARGS[${#ARGS[@]}]="$var"
+done
+
+exec g++ -std=gnu++98 "${ARGS[@]}"

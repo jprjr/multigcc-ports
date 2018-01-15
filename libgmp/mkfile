@@ -1,0 +1,24 @@
+pkg = libgmp
+ver = 6.1.2
+url = http://gmplib.org/download/gmp/gmp-$ver.tar.xz
+sha256sum = 87b565e89a9a684fe4ebeeddb8399dce2599f9c9049854ca8c0dfbdea0e21912
+
+<../default.mk
+
+build:QV: fetch patch
+	cd $WORK/$pkg-$ver
+	libtoolize --force
+	test -f configure && CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" LD="/usr/bin/ld" ./configure \
+	  --prefix=/usr \
+	  --target=$CHOST \
+	  --host=$CTARGET \
+	  --build=$CBUILD \
+	  --enable-static \
+	  --enable-shared \
+	  --enable-cxx \
+	  --with-pic
+	make -j${NPROC}
+
+install:QV: build
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} DESTDIR=$destdir install

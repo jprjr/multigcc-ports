@@ -1,0 +1,7 @@
+pkg = which
+ver = 2.21
+url =  https://ftp.gnu.org/gnu/which/which-$ver.tar.gz
+sha256sum = f4a245b94124b377d8b49646bf421f9155d36aa7614b6ebf83705d3ffc76eaad
+
+<../default.mk
+

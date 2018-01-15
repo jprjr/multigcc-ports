@@ -1,0 +1,15 @@
+pkg = libtool
+ver = 2.4.6
+url = https://ftp.gnu.org/gnu/libtool/libtool-$ver.tar.xz
+sha256sum = 7c87a8c2c8c0fc9cd5019e402bed4292462d00a718a7cd5f11218153bf28b26f
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	test -f configure && CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS LD=/usr/bin/ld ./configure --prefix=/usr \
+	  --host=$CHOST \
+	  --target=$CTARGET \
+	  --build=$CBUILD
+	make
+

@@ -1,0 +1,6 @@
+pkg = pm
+ver = 1.2
+url = http://dl.z3bra.org/releases/$pkg-$ver.tar.bz2
+sha256sum = 71d5cb7c91097c491627f3f512d7ed65e80498a5f9c3232ae7efc8e4a2495fd7
+
+<../default.mk

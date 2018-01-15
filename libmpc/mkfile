@@ -1,0 +1,8 @@
+pkg = libmpc
+ver = 1.0.3
+url = https://ftp.gnu.org/gnu/mpc/mpc-$ver.tar.gz
+
+sha256sum = 617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3
+
+<../default.mk
+

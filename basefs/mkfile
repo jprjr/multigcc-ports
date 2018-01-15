@@ -1,0 +1,48 @@
+pkg = basefs
+ver = 0.0.0
+
+<../config.mk
+
+srcdir = `{pwd}
+destdir = `{printf '%s/%s/' "$STAGE" "$pkg-$ver"}
+tarball = ${REPO}/$pkg@$ver.tgz
+
+$tarball:Q: build-files
+	cd $destdir
+	find . -printf '%P\0' | LC_ALL=C sort -z | \
+	GZIP=-9n ${TAR} --null --no-recursion --files-from=- --owner=root --group=root --numeric-owner \
+	--mode=go=rX,u+rw,a-s -czf $tarball
+
+build-files: build-fs
+    ln -s bin $destdir/usr/sbin
+	ln -s usr/bin $destdir/bin
+	ln -s usr/bin $destdir/sbin
+	ln -s lib $destdir/usr/lib64
+	ln -s usr/lib $destdir/lib
+	ln -s usr/lib $destdir/lib64
+	mkdir -p $destdir/var/cache/repo
+	cp $srcdir/files/etc/fstab $destdir/etc/fstab
+	cp $srcdir/files/etc/group $destdir/etc/group
+	cp $srcdir/files/etc/passwd $destdir/etc/passwd
+	cp $srcdir/files/etc/profile $destdir/etc/profile
+	cp $srcdir/files/etc/resolv.conf $destdir/etc/resolv.conf
+	cp $srcdir/files/etc/shells $destdir/etc/shells
+	cp $srcdir/files/bin/set-default-gcc $destdir/usr/bin/set-default-gcc
+
+build-fs:QV:
+        for dir in etc dev sys proc tmp usr src var ; do
+                mkdir -p $destdir/$dir
+        done
+		for dir in bin include lib libexec share ; do
+				mkdir -p $destdir/usr/$dir
+		done
+        for vardir in run log lock tmp cache db ; do
+                mkdir -p $destdir/var/$vardir
+        done
+
+
+clean:V:
+	rm -rf $pkg-$ver
+
+distclean:V: clean
+	rm -f ${REPO}/$pkg@$ver.tbz2

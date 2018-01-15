@@ -1,0 +1,22 @@
+pkg = pigz
+ver = 2.4
+url = https://zlib.net/pigz/pigz-$ver.tar.gz
+sha256sum = a4f816222a7b4269bd232680590b579ccc72591f1bb5adafcd7208ca77e14f73
+
+<../default.mk
+
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} CC="$CC" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	mkdir -p $destdir/usr/bin
+	mkdir -p $destdir/usr/share/man/man1
+	cp pigz $destdir/usr/bin
+	ln -s pigz $destdir/usr/bin/unpigz
+	ln -s pigz $destdir/usr/bin/gzip
+	ln -s pigz $destdir/usr/bin/gunzip
+	cp pigz.1 $destdir/usr/share/man/man1

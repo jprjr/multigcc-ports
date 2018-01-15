@@ -1,0 +1,4 @@
+PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+MANPATH=/usr/share/man
+export PATH MANPATH
+umask 022

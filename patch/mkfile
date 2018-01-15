@@ -1,0 +1,7 @@
+pkg = patch
+ver = 2.7.5
+url =  https://ftp.gnu.org/gnu/patch/patch-$ver.tar.xz
+sha256sum = fd95153655d6b95567e623843a0e77b81612d502ecf78a489a4aed7867caa299
+
+<../default.mk
+

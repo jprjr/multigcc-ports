@@ -1,0 +1,6 @@
+pkg = libressl
+ver = 2.6.4
+url = http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$pkg-$ver.tar.gz
+sha256sum = 638a20c2f9e99ee283a841cd787ab4d846d1880e180c4e96904fc327d419d11f
+
+<../default.mk

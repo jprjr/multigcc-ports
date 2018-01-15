@@ -1,0 +1,7 @@
+pkg = automake
+ver = 1.15.1
+url = https://ftp.gnu.org/gnu/automake/automake-$ver.tar.xz
+sha256sum = af6ba39142220687c500f79b4aa2f181d9b24e4f8d8ec497cea4ba26c64bedaf 
+
+<../default.mk
+
