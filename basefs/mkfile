@@ -27,7 +27,6 @@ build-files: build-fs
 	cp $srcdir/files/etc/profile $destdir/etc/profile
 	cp $srcdir/files/etc/resolv.conf $destdir/etc/resolv.conf
 	cp $srcdir/files/etc/shells $destdir/etc/shells
-	cp $srcdir/files/bin/set-default-gcc $destdir/usr/bin/set-default-gcc
 
 build-fs:QV:
         for dir in etc dev sys proc tmp usr src var ; do
