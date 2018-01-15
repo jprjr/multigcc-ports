@@ -1,5 +1,5 @@
 TRIPLET = x86_64-pc-linux-musl
-TOOLCHAIN=
+TOOLCHAIN = ${TRIPLET}-
 
 STAGE   = /var/cache/buildroot/stage
 REPO    = /var/cache/repo
@@ -25,7 +25,7 @@ CTARGET   = $TRIPLET
 
 CPPFLAGS  = -g0 -Os
 CFLAGS    = ${CPPFLAGS}
-LDFLAGS   = -s -rpath usr/lib/gcc/x86_64-pc-linux-musl/4.9.4/
+LDFLAGS   = -s
 CONFIGURE = --prefix=/usr \
             --host=$CHOST \
             --build=$CBUILD \

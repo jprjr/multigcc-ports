@@ -29,13 +29,6 @@ CONFIGURE = \
 build:QV: fetch patch
 	mkdir -p $WORK/$pkg-$ver/build
 	cd $WORK/$pkg-$ver/build
-	CC="gcc" \
-	CXX="g++" \
-	CC_FOR_TARGET="gcc" \
-	CXX_FOR_TARGET="g++" \
-	CFLAGS="-g0 -Os" \
-	CXXFLAGS="-g0 -Os" \
-	LDFLAGS="-s" \
 	../configure $CONFIGURE
 	make -j${NPROC}
 
