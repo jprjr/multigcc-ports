@@ -7,6 +7,7 @@ sha256sum = 1cf7adf8ff4b5aa49041c8734bbcf1ad18cc4c94d0029aae0f4e48841088479a
 <../default.mk
 
 CONFIGURE = \
+    --build=$CHOST \
     --target=$CHOST \
 	--host=$CHOST \
 	--prefix=/usr \
