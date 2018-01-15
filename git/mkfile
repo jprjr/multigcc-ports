@@ -1,0 +1,30 @@
+pkg = git
+ver = 2.15.1
+url = https://github.com/git/git/archive/v${ver}.tar.gz
+sha256sum = 3cbc474c7fe9013b1cd4310636f0992d767d435ac9f642744551fd9a2b4b9d15
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} PREFIX="/usr" prefix="/usr" \
+	NO_REGEX=YesPlease \
+	NO_GETTEXT=YesPlease \
+	NO_TCLTK=YesPlease \
+	USE_LIBPCRE2=YesPlease \
+	CC=$CC \
+	CFLAGS="-g0 -Os -DNO_SYS_POLL_H" \
+	LDFLAGS="-s" all
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} PREFIX="/usr" prefix="/usr" DESTDIR=$destdir \
+	NO_REGEX=YesPlease \
+	NO_GETTEXT=YesPlease \
+	NO_TCLTK=YesPlease \
+	USE_LIBPCRE2=YesPlease \
+	CC=$CC \
+	CFLAGS="-g0 -Os -DNO_SYS_POLL_H" \
+	LDFLAGS="-s" install
+

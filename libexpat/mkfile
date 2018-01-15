@@ -1,0 +1,24 @@
+pkg = libexpat
+ver = 2.2.5
+url = https://github.com/libexpat/libexpat/archive/R_2_2_5.tar.gz
+
+sha256sum = b3781742738611eaa737543ee94264dd511c52a3ba7e53111f7d705f6bff65a8
+
+<../default.mk
+
+build:QV: fetch patch
+	cd $WORK/$pkg-$ver/expat
+	./buildconf.sh
+	./configure $CONFIGURE
+	rm -rf doc
+	mkdir doc
+	printf "all:\n\ttrue\n\ninstall:\n\ttrue\n" > doc/Makefile
+	make -j${NPROC}
+
+install:QV: build
+	cd $WORK/$pkg-$ver/expat
+	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man
+
