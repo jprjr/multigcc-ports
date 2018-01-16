@@ -5,3 +5,9 @@ sha256sum = 25772f653ac5b2e3ceeb89df50e4688891e21f723c460636548971652af0a859
 
 <../default.mk
 
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} DESTDIR=$destdir install install-lib install-dev
+
