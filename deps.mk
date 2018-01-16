@@ -2,16 +2,13 @@ acl:V: attr
 attr:V: gettext
 automake:V: autoconf
 bash:V: readline ncurses
-binutils:V: musl
-boost:V: python
+binutils:V: zlib
+boost:V: python zlib bzip2 xz
 cmake:V: libarchive python curl
 curl:V: libressl zlib ca-certificates
 dash: autoconf
-gcc-4.9:V: binutils zlib libmpc libisl musl
-gcc-5.5:V: binutils zlib libmpc libisl musl
-gcc-6.4:V: binutils zlib libmpc libisl musl
-gcc-7.2:V: binutils zlib libmpc libisl musl
-git:V: curl libexpat pcre2 perl
+gcc:V: binutils libmpc libisl musl zlib
+git:V: zlib curl libexpat pcre2 perl
 libarchive:V: zlib bzip2 xz acl attr libressl
 libbio:V: libutf libfmt
 libfmt:V: libutf
@@ -28,3 +25,8 @@ pm:V: libarchive zlib bzip2 attr acl xz
 pigz:V: zlib
 python:V: zlib readline bzip2 libressl
 tar:V: pigz bzip2 xz
+x86_64-w64-mingw32-binutils:V: zlib gcc
+x86_64-w64-mingw32-boost:V: x86_64-w64-mingw32-gcc x86_64-w64-mingw32-bzip2 x86_64-w64-mingw32-zlib x86_64-w64-mingw32-xz
+x86_64-w64-mingw32-mingw:V: x86_64-w64-mingw32-binutils
+x86_64-w64-mingw32-gcc:V: zlib libmpc libisl x86_64-w64-mingw32-binutils x86_64-w64-mingw32-mingw gcc
+x86_64-w64-mingw32-zlib:V: x86_64-w64-mingw32-gcc

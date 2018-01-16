@@ -1,4 +1,4 @@
-pkg = gcc-7.2
+pkg = gcc
 ver = 7.2.0
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
 

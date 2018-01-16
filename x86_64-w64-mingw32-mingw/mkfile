@@ -1,0 +1,38 @@
+pkg = x86_64-w64-mingw32-mingw
+ver = 5.0.3
+url = https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v$ver.tar.bz2
+sha256sum = 2a601db99ef579b9be69c775218ad956a24a09d7dabc9ff6c5bd60da9ccc9cb4
+
+<../default.mk
+
+CONFIGURE = --prefix=/usr/x86_64-w64-mingw32 \
+  --build=x86_64-pc-linux-musl \
+  --host=x86_64-w64-mingw32 \
+  --enable-sdk=all \
+  --enable-idl \
+  --enable-secure-api
+
+
+build:V: fetch patch
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $WORK/$pkg-$ver/mingw-w64-headers/build
+	cd $WORK/$pkg-$ver/mingw-w64-headers/build
+	../configure $CONFIGURE
+	make -j${NPROC}
+	mkdir -p $WORK/$pkg-$ver/mingw-w64-crt/build
+	cd $WORK/$pkg-$ver/mingw-w64-crt/build
+	../configure \
+		--prefix=/usr/x86_64-w64-mingw32 \
+        --build=x86_64-pc-linux-musl \
+        --host=x86_64-w64-mingw32
+	make -j ${NPROC}
+
+
+install:QV: build
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/mingw-w64-headers/build
+	make DESTDIR=$destdir install
+	cd $WORK/$pkg-$ver/mingw-w64-crt/build
+	make DESTDIR=$destdir install
+

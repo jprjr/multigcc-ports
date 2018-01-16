@@ -20,8 +20,8 @@ install:QV: build
 	  link=shared,static \
 	  toolset=gcc \
 	  python=2.7 \
-	  cflags="-fPIC -g0 -Os" \
-	  cxxflags="-fPIC -g0 -Os -std=c++14" \
+	  cflags="-fPIC" \
+	  cxxflags="-fPIC" \
 	  linkflags="-s" \
 	  --layout=system \
 	  --prefix=$destdir/usr \

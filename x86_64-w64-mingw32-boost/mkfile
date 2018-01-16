@@ -1,0 +1,41 @@
+pkg = x86_64-w64-mingw32-boost
+ver = 1.66.0
+url = https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+sha256sum = 5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9
+
+<../default.mk
+<../config-x86_64-w64-mingw32.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	./bootstrap.sh --with-toolset=gcc
+
+# using gcc:  mingw : i586-mingw32msvc-g++ : <rc>/usr/bin/i586-mingw32msvc-windres ;
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	echo "using gcc : mingw : x86_64-w64-mingw32-g++ : <rc>x86_64-w64-mingw32-windres <archiver>x86_64-w64-mingw32-ar <ranlib>x86_64-w64-mingw32-ranlib ;" > user-config.jam
+	./b2 \
+	  abi=ms \
+	  target-os=windows \
+	  variant=release \
+	  debug-symbols=off \
+	  threading=multi \
+	  threadapi=win32 \
+	  runtime-link=shared \
+	  link=shared,static \
+	  toolset=gcc-mingw \
+	  linkflags="-s" \
+	  binary-format=pe \
+	  architecture=x86 \
+	  address-model=64 \
+	  --disable-icu \
+	  --without-mpi \
+	  --without-python \
+	  --user-config=user-config.jam \
+	  --layout=system \
+	  --prefix=$destdir/usr/x86_64-w64-mingw32 \
+	  -j${NPROC} \
+	  install
+

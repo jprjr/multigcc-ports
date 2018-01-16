@@ -1,0 +1,10 @@
+pkg = x86_64-w64-mingw32-xz
+ver = 5.2.3
+url = https://tukaani.org/xz/xz-$ver.tar.gz
+sha256sum = 71928b357d0a09a12a4b4c5fafca8c31c19b0e7d3b8ebb19622e96f26dbf28cb
+
+<../default.mk
+<../config-x86_64-w64-mingw32.mk
+
+RC = $WINDRES -c 1252
+
