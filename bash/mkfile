@@ -5,3 +5,4 @@ sha256sum = 57d8432be54541531a496fd4904fdc08c12542f43605a9202594fa5d5f9f2331
 
 <../default.mk
 
+CONFIGURE = $CONFIGURE --without-bash-malloc
