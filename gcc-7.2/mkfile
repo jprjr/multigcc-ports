@@ -25,7 +25,7 @@ CONFIGURE = \
 	--disable-libmpx \
 	--enable-libstdcxx-time \
 	--enable-__cxa_atexit \
-	--enable-languages=c,c++,go
+	--enable-languages=c,c++
 
 build:QV: fetch patch
 	mkdir -p $WORK/$pkg-$ver/build
