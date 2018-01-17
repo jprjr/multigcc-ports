@@ -19,6 +19,8 @@ libmpfr:V: libgmp
 libregexp9:V: libutf libfmt
 libressl:V: linux-headers zlib musl
 libtool:V: help2man
+libunwind:V: cmake
+llvm:V: cmake gcc
 mk:V: libutf libfmt libbio libregexp9
 musl:V: linux-headers
 pm:V: libarchive zlib bzip2 attr acl xz

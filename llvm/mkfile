@@ -1,0 +1,196 @@
+pkg = llvm
+ver = 5.0.1
+
+url_llvm        = http://releases.llvm.org/$ver/llvm-$ver.src.tar.xz
+url_clang       = http://releases.llvm.org/$ver/cfe-$ver.src.tar.xz
+url_lld       = http://releases.llvm.org/$ver/lld-$ver.src.tar.xz
+url_compiler_rt = http://releases.llvm.org/$ver/compiler-rt-$ver.src.tar.xz
+url_libcxx      = http://releases.llvm.org/$ver/libcxx-$ver.src.tar.xz
+url_libcxxabi   = http://releases.llvm.org/$ver/libcxxabi-$ver.src.tar.xz
+url_libunwind   = http://releases.llvm.org/$ver/libunwind-$ver.src.tar.xz
+
+sha256sum_llvm = 5fa7489fc0225b11821cab0362f5813a05f2bcf2533e8a4ea9c9c860168807b0
+sha256sum_clang = 135f6c9b0cd2da1aff2250e065946258eb699777888df39ca5a5b4fe5e23d0ff
+sha256sum_lld = d5b36c0005824f07ab093616bdff247f3da817cae2c51371e1d1473af717d895
+sha256sum_compiler_rt = 4edd1417f457a9b3f0eb88082530490edf3cf6a7335cdce8ecbc5d3e16a895da
+sha256sum_libcxx = fa8f99dd2bde109daa3276d529851a3bce5718d46ce1c5d0806f46caa3e57c00
+sha256sum_libcxxabi = 5a25152cb7f21e3c223ad36a1022faeb8a5ac27c9e75936a5ae2d3ac48f6e854
+sha256sum_libunwind = 6bbfbf6679435b858bd74bdf080386d084a76dfbf233fb6e47b2c28e0872d0fe
+
+<../config.mk
+
+srcdir  = `{pwd}
+destdir = `{printf '%s/%s/' "$STAGE" "$pkg-$ver"}
+
+archive_llvm        = `{basename $url_llvm 2>/dev/null || echo /dev/null}
+archive_clang       = `{basename $url_clang 2>/dev/null || echo /dev/null}
+archive_lld       = `{basename $url_lld 2>/dev/null || echo /dev/null}
+archive_compiler_rt = `{basename $url_compiler_rt 2>/dev/null || echo /dev/null}
+archive_libcxx      = `{basename $url_libcxx 2>/dev/null || echo /dev/null}
+archive_libcxxabi   = `{basename $url_libcxxabi 2>/dev/null || echo /dev/null}
+archive_libunwind   = `{basename $url_libunwind 2>/dev/null || echo /dev/null}
+tarball             = ${REPO}/$pkg@$ver.tgz
+
+# create a pack from an chroot install (see the "install" target)
+$tarball:Q:
+	mk fetch patch build install cleanup
+	cd $destdir
+	mkdir -p $(dirname $tarball)
+	find . -printf '%P\0' | LC_ALL=C sort -z | \
+	GZIP=-9n ${TAR} --null --no-recursion --files-from=- --owner=root --group=root --numeric-owner \
+	--mode=go=rX,u+rw,a-s -czf $tarball
+	printf '\n\t%s\n\n' "$tarball"
+
+# recipe trying to follow the most common pattern in software
+# building
+# If it doesn't work, simply override it on a per pack basis
+build:V: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DLLVM_INCLUDE_TESTS=OFF \
+		-DLLVM_INCLUDE_EXAMPLES=OFF \
+		-DLLVM_INCLUDE_DOCS=OFF \
+		-DLLVM_TOOL_LIBCXXABI_BUILD=ON \
+		-DLLVM_TOOL_LIBCXX_BUILD=ON \
+		-DLLVM_TOOL_LIBUNWIND_BUILD=ON \
+		-DLLVM_TOOL_COMPILER_RT_BUILD=ON \
+		-DLLVM_TOOL_LLD_BUILD=ON \
+		-DLLVM_TOOL_LLDB_BUILD=OFF \
+		-DLLVM_ENABLE_ASSERTIONS=ON \
+		-DLLVM_ENABLE_LLD=OFF \
+		-DLLVM_ENABLE_CXX1Y=ON \
+		-DLLVM_ENABLE_FFI=ON \
+		-DLLVM_ENABLE_LIBCXX=ON \
+		-DLLVM_ENABLE_PIC=ON \
+		-DLLVM_ENABLE_RTTI=ON \
+		-DLLVM_ENABLE_SPHINX=OFF \
+		-DLLVM_ENABLE_TERMINFO=OFF \
+		-DLLVM_ENABLE_ZLIB=ON \
+		-DLLVM_DEFAULT_TARGET_TRIPLE="x86_64-pc-linux-musl" \
+		-DGCC_INSTALL_PREFIX="/usr" \
+		-DLLVM_BUILD_LLVM_DYLIB=ON \
+		-DLLVM_LINK_LLVM_DYLIB=ON \
+		-DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+		-DCLANG_DEFAULT_RTLIB=compiler-rt \
+		-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
+		-DCLANG_HAVE_LIBXML=OFF \
+		-DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+		-DLIBCXX_CXX_ABI=libcxxabi \
+		-DLIBCXX_HAS_MUSL_LIBC=ON \
+		-DLIBCXX_HAS_GCC_S_LIB=OFF \
+		-DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/$ver \
+		-DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+		-DCOMPILER_RT_BUILD_XRAY=OFF \
+		..
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/build
+	make -j${NPROC} DESTDIR=$destdir install
+
+cleanup:V: install
+	cd $destdir
+	test -n "$CLEANUP" && rm -r $CLEANUP
+	find . -name '*.la'   | xargs -r rm
+
+# patch your software using everything in ./patches
+patch:QV: fetch
+	if [ -d "$srcdir/patches" ]; then
+		cd $WORK/$pkg-$ver
+		cat $srcdir/patches/*.diff | patch -Np1
+	fi
+
+# fetch the source
+fetch:QV: fetch-git fetch-archive
+
+# if $git is set, clone the repo, and checkout $ver
+fetch-git:QV:
+	if [ -n "$git" ]; then
+		mkdir -p $WORK
+		cd $WORK
+		test -d $pkg-$ver || git clone -q $git $pkg-$ver
+		cd $pkg-$ver
+		git reset -q --hard
+		git checkout -q $ver
+	fi
+
+# if $url is set, download/extract the archive, and move its
+# content to a directory named $pkg-$ver
+fetch-archive:QV: $WORK/$archive_llvm $WORK/$archive_clang $WORK/$archive_lld $WORK/$archive_compiler_rt $WORK/$archive_libcxx $WORK/$archive_libcxxabi $WORK/$archive_libunwind
+	cd $WORK
+	rm -rf $pkg-$ver
+	${TAR} -J -xvf $archive_llvm
+	${TAR} -J -xvf $archive_clang
+	${TAR} -J -xvf $archive_lld
+	${TAR} -J -xvf $archive_compiler_rt
+	${TAR} -J -xvf $archive_libcxx
+	${TAR} -J -xvf $archive_libcxxabi
+	${TAR} -J -xvf $archive_libunwind
+	mv cfe-$ver.src llvm-$ver.src/tools/clang
+	mv lld-$ver.src llvm-$ver.src/tools/lld
+	mv compiler-rt-$ver.src llvm-$ver.src/projects/compiler-rt
+	mv libcxx-$ver.src llvm-$ver.src/projects/libcxx
+	mv libcxxabi-$ver.src llvm-$ver.src/projects/libcxxabi
+	mv libunwind-$ver.src llvm-$ver.src/projects/libunwind
+	mv llvm-$ver.src "$pkg-$ver"
+
+$WORK/$archive_llvm:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_llvm > $archive_llvm
+	printf "%s  %s\n" "$sha256sum_llvm" "$archive_llvm" | sha256sum -c
+
+$WORK/$archive_clang:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_clang > $archive_clang
+	printf "%s  %s\n" "$sha256sum_clang" "$archive_clang" | sha256sum -c
+
+$WORK/$archive_lld:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_lld > $archive_lld
+	printf "%s  %s\n" "$sha256sum_lld" "$archive_lld" | sha256sum -c
+
+$WORK/$archive_compiler_rt:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_compiler_rt > $archive_compiler_rt
+	printf "%s  %s\n" "$sha256sum_compiler_rt" "$archive_compiler_rt" | sha256sum -c
+
+$WORK/$archive_libcxx:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libcxx > $archive_libcxx
+	printf "%s  %s\n" "$sha256sum_libcxx" "$archive_libcxx" | sha256sum -c
+
+$WORK/$archive_libcxxabi:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libcxxabi > $archive_libcxxabi
+	printf "%s  %s\n" "$sha256sum_libcxxabi" "$archive_libcxxabi" | sha256sum -c
+
+$WORK/$archive_libunwind:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libunwind > $archive_libunwind
+	printf "%s  %s\n" "$sha256sum_libunwind" "$archive_libunwind" | sha256sum -c
+
+
+# delete everything but the pack
+clean:V:
+	rm -rf $WORK
+	rm -rf $destdir
+
+# remove the pack
+distclean:V: clean
+	rm -f $tarball
