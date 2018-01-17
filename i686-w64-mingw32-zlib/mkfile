@@ -1,0 +1,39 @@
+pkg = i686-w64-mingw32-zlib
+ver = 1.2.11
+url = http://zlib.net/zlib-$ver.tar.gz
+sha256sum = c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
+
+<../default.mk
+<../config-i686-w64-mingw32.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} CC=$CC LD=$LD AR=$AR RANLIB=$RANLIB RC="$WINDRES -c 1252" -fwin32/Makefile.gcc libz.a zlib1.dll libz.dll.a
+
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -fwin32/Makefile.gcc -j${NPROC} \
+		CC=$CC \
+		LD=$LD \
+		AR=$AR \
+		RANLIB=$RANLIB \
+		RC="$WINDRES -c 1252" \
+		DESTDIR=$destdir \
+		BINARY_PATH=/usr/i686-w64-mingw32/bin \
+		LIBRARY_PATH=/usr/i686-w64-mingw32/lib \
+		INCLUDE_PATH=/usr/i686-w64-mingw32/include \
+		install
+	make -fwin32/Makefile.gcc -j${NPROC} \
+		CC=$CC \
+		LD=$LD \
+		AR=$AR \
+		RANLIB=$RANLIB \
+		RC="$WINDRES -c 1252" \
+		DESTDIR=$destdir \
+		BINARY_PATH=/usr/i686-w64-mingw32/bin \
+		LIBRARY_PATH=/usr/i686-w64-mingw32/lib \
+		INCLUDE_PATH=/usr/i686-w64-mingw32/include \
+		SHARED_MODE=1 \
+		install
+

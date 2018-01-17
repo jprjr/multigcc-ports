@@ -32,3 +32,8 @@ x86_64-w64-mingw32-boost:V: x86_64-w64-mingw32-gcc x86_64-w64-mingw32-bzip2 x86_
 x86_64-w64-mingw32-mingw:V: x86_64-w64-mingw32-binutils
 x86_64-w64-mingw32-gcc:V: zlib libmpc libisl x86_64-w64-mingw32-binutils x86_64-w64-mingw32-mingw gcc
 x86_64-w64-mingw32-zlib:V: x86_64-w64-mingw32-gcc
+i686-w64-mingw32-binutils:V: zlib gcc
+i686-w64-mingw32-boost:V: i686-w64-mingw32-gcc i686-w64-mingw32-bzip2 i686-w64-mingw32-zlib i686-w64-mingw32-xz
+i686-w64-mingw32-mingw:V: i686-w64-mingw32-binutils
+i686-w64-mingw32-gcc:V: zlib libmpc libisl i686-w64-mingw32-binutils i686-w64-mingw32-mingw gcc
+i686-w64-mingw32-zlib:V: i686-w64-mingw32-gcc

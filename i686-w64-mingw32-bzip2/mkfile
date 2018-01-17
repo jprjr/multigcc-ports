@@ -1,0 +1,17 @@
+pkg = i686-w64-mingw32-bzip2
+ver = 1.0.6
+url = http://bzip.org/$ver/bzip2-$ver.tar.gz
+sha256sum = a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd
+
+<../default.mk
+<../config-i686-w64-mingw32.mk
+
+BIGFILES = -D_FILE_OFFSET_BITS=64
+CFLAGS = $CFLAGS -Wall -Winline -Os -g0 $BIGFILES
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	sh autogen.sh
+	test -f configure && ./configure $CONFIGURE
+	make -j${NPROC}
+
