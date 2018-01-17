@@ -8,7 +8,7 @@ cmake:V: libarchive python curl
 curl:V: libressl zlib ca-certificates
 dash: autoconf
 gcc:V: binutils libmpc libisl musl zlib
-git:V: zlib curl libexpat pcre2 perl
+git:V: zlib curl libexpat pcre2 perl gcc
 libarchive:V: zlib bzip2 xz acl attr libressl
 libbio:V: libutf libfmt
 libfmt:V: libutf
