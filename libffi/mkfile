@@ -1,0 +1,24 @@
+pkg = libffi
+ver = 3.2.1
+url = ftp://sourceware.org/pub/libffi/libffi-$ver.tar.gz
+sha256sum = d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37
+
+<../default.mk
+
+CONFIGURE = --prefix=/usr \
+  --target=$CHOST \
+  --build=$CHOST \
+  --host=$CHOST
+
+install:QV: build
+	mkdir -p $destdir/usr/include
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} DESTDIR=$destdir install
+	mv $destdir/usr/lib64/* $destdir/usr/lib
+	rmdir $destdir/usr/lib64
+	mv $destdir/usr/lib/libffi-$ver/include/*.h $destdir/usr/include
+	rmdir $destdir/usr/lib/libffi-$ver/include
+	rmdir $destdir/usr/lib/libffi-$ver
+	sed -i -e '/^includedir=/{s,=.*,=/usr/include,g}' \
+	  $destdir/usr/lib/pkgconfig/libffi.pc
+
