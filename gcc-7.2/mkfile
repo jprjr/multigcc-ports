@@ -25,7 +25,7 @@ CONFIGURE = \
 	--disable-libmpx \
 	--enable-libstdcxx-time \
 	--enable-__cxa_atexit \
-	--enable-languages=c,c++
+	--enable-languages=c,c++,go
 
 build:QV: fetch patch
 	mkdir -p $WORK/$pkg-$ver/build
@@ -36,3 +36,6 @@ build:QV: fetch patch
 install:QV: build
 	cd $WORK/$pkg-$ver/build
 	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man

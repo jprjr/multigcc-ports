@@ -24,7 +24,7 @@ CONFIGURE = \
 	--disable-gnu-indirect-function \
 	--disable-libmpx \
 	--enable-libstdcxx-time \
-	--enable-languages=c,c++ \
+	--enable-languages=c,c++,go \
 	--enable-__cxa_atexit
 
 
