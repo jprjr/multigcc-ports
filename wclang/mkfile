@@ -1,0 +1,40 @@
+pkg = wclang
+ver = 20170930
+_commit = a1e0fbbed6ae139bf7b92a52bf502a6a64981d33
+url = https://github.com/tpoechtrager/wclang/archive/${_commit}.tar.gz
+
+sha256sum = 693dbdb2bcbb2cbb27486d55f4e4983edfd9b41756371b93664f5205eb81bc05
+
+<../default.mk
+
+build:V: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g0 -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		..
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/build
+	make -j${NPROC} DESTDIR=$destdir install
+	cd $destdir
+	mkdir bin.tmp
+	mv usr/bin/wclang bin.tmp
+	rm usr/bin/*
+	mv bin.tmp/wclang usr/bin/wclang
+	rmdir bin.tmp
+	cp $srcdir/files/wclang-wrapper usr/bin/x86_64-w64-mingw32-clang
+	cp $srcdir/files/wclang++-wrapper usr/bin/x86_64-w64-mingw32-clang++
+	cp $srcdir/files/wclang-wrapper usr/bin/i686-w64-mingw32-clang
+	cp $srcdir/files/wclang++-wrapper usr/bin/i686-w64-mingw32-clang++
+

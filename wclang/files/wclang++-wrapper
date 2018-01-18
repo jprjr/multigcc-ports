@@ -1,0 +1,25 @@
+#!/bin/sh
+
+rtlib_set=0
+stdlib_set=0
+rtlib_flags=""
+stdlib_flags=""
+
+for arg in "$@" ; do
+    if [ "${arg#*rtlib}" != "${arg}" ] ; then
+        rtlib_set=1
+    fi
+    if [ "${arg#*stdlib}" != "${arg}" ] ; then
+        stdlib_set=1
+    fi
+done
+
+if [ $rtlib_set -eq 0 ] ; then
+    rtlib_flags="-rtlib=platform"
+fi
+
+if [ $stdlib_set -eq 0 ] ; then
+    stdlib_flags="-stdlib=platform"
+fi
+
+exec /usr/lib/libc.so --argv0="$0" /usr/bin/wclang ${rtlib_flags} ${stdlib_flags} "$@"
