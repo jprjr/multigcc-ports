@@ -1,0 +1,174 @@
+pkg = libcxx
+ver = 5.0.1
+
+libcxx_rt_ver = 6f4cfa28c42b71cdff570f69ed523ab45d4245be
+
+url_libcxxrt    = https://github.com/pathscale/libcxxrt/archive/$libcxx_rt_ver.tar.gz
+url_libcxx      = http://releases.llvm.org/$ver/libcxx-$ver.src.tar.xz
+url_libcxxabi   = http://releases.llvm.org/$ver/libcxxabi-$ver.src.tar.xz
+
+sha256sum_libcxxrt = e96b22bb78b4965697facc5f2ac82090a45b307de62b31b715ef362c5cd25836
+sha256sum_libcxx = fa8f99dd2bde109daa3276d529851a3bce5718d46ce1c5d0806f46caa3e57c00
+sha256sum_libcxxabi = 5a25152cb7f21e3c223ad36a1022faeb8a5ac27c9e75936a5ae2d3ac48f6e854
+
+<../config.mk
+
+srcdir  = `{pwd}
+destdir = `{printf '%s/%s/' "$STAGE" "$pkg-$ver"}
+
+archive_libcxxrt    = `{basename $url_libcxxrt 2>/dev/null || echo /dev/null}
+archive_libcxx      = `{basename $url_libcxx 2>/dev/null || echo /dev/null}
+archive_libcxxabi   = `{basename $url_libcxxabi 2>/dev/null || echo /dev/null}
+tarball             = ${REPO}/$pkg@$ver.tgz
+
+# create a pack from an chroot install (see the "install" target)
+$tarball:Q:
+	mk fetch patch build install cleanup
+	cd $destdir
+	mkdir -p $(dirname $tarball)
+	find . -printf '%P\0' | LC_ALL=C sort -z | \
+	GZIP=-9n ${TAR} --null --no-recursion --files-from=- --owner=root --group=root --numeric-owner \
+	--mode=go=rX,u+rw,a-s -czf $tarball
+	printf '\n\t%s\n\n' "$tarball"
+
+# recipe trying to follow the most common pattern in software
+# building
+# If it doesn't work, simply override it on a per pack basis
+build:V: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build-libcxxrt
+	mkdir -p $WORK/$pkg-$ver/build-libcxx-libcxxrt
+	mkdir -p $WORK/$pkg-$ver/build-libcxxabi
+	mkdir -p $WORK/$pkg-$ver/build-libcxx
+	cd $WORK/$pkg-$ver/build-libcxxrt
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		../libcxxrt
+	make -j${NPROC}
+	cd $WORK/$pkg-$ver/build-libcxx-libcxxrt
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DLIBCXX_HAS_MUSL_LIBC=ON \
+		-DLIBCXX_HAS_GCC_S_LIB=OFF \
+		-DLIBCXX_CXX_ABI=libcxxrt \
+		-DLIBCXX_CXX_ABI_LIBRARY_PATH="$WORK/$pkg-$ver/build-libcxxrt/lib" \
+		-DLIBCXX_CXX_ABI_INCLUDE_PATHS="$WORK/$pkg-$ver/libcxxrt/src" \
+		../libcxx
+	make -j${NPROC}
+	cd $WORK/$pkg-$ver/build-libcxxabi
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DCMAKE_SHARED_LINKER_FLAGS="-Wl,--whole-archive -lunwind -Wl,--no-whole-archive" \
+		-DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+		-DLIBCXXABI_LIBCXX_INCLUDES="$WORK/$pkg-$ver/libcxx/include" \
+		-DLIBCXXABI_LIBCXX_LIBRARY_PATH="$WORK/$pkg-$ver/build-libcxx-libcxxrt/lib" \
+		../libcxxabi
+	make -j${NPROC}
+	cd $WORK/$pkg-$ver/build-libcxx
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DLIBCXX_HAS_MUSL_LIBC=ON \
+		-DLIBCXX_HAS_GCC_S_LIB=OFF \
+		-DLIBCXX_CXX_ABI=libcxxabi \
+		-DLIBCXX_CXX_ABI_LIBRARY_PATH="$WORK/$pkg-$ver/build-libcxxabi/lib" \
+		-DLIBCXX_CXX_ABI_INCLUDE_PATHS="$WORK/$pkg-$ver/libcxxabi/include" \
+		../libcxx
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/build-libcxxabi
+	make -j${NPROC} DESTDIR=$destdir install
+	cd $WORK/$pkg-$ver/build-libcxx
+	make -j${NPROC} DESTDIR=$destdir install
+
+cleanup:V: install
+	cd $destdir
+	test -n "$CLEANUP" && rm -r $CLEANUP
+	find . -name '*.la'   | xargs -r rm
+
+# patch your software using everything in ./patches
+patch:QV: fetch
+	if [ -d "$srcdir/patches" ]; then
+		cd $WORK/$pkg-$ver
+		cat $srcdir/patches/*.diff | patch -Np1
+	fi
+
+# fetch the source
+fetch:QV: fetch-git fetch-archive
+
+# if $git is set, clone the repo, and checkout $ver
+fetch-git:QV:
+	if [ -n "$git" ]; then
+		mkdir -p $WORK
+		cd $WORK
+		test -d $pkg-$ver || git clone -q $git $pkg-$ver
+		cd $pkg-$ver
+		git reset -q --hard
+		git checkout -q $ver
+	fi
+
+# if $url is set, download/extract the archive, and move its
+# content to a directory named $pkg-$ver
+fetch-archive:QV: $WORK/$archive_libcxxrt $WORK/$archive_libcxx $WORK/$archive_libcxxabi
+	cd $WORK
+	rm -rf $pkg-$ver
+	mkdir -p $pkg-$ver
+	${TAR} -z -xvf $archive_libcxxrt
+	${TAR} -J -xvf $archive_libcxx
+	${TAR} -J -xvf $archive_libcxxabi
+	mv libcxxrt-$libcxx_rt_ver $pkg-$ver/libcxxrt
+	mv libcxx-$ver.src $pkg-$ver/libcxx
+	mv libcxxabi-$ver.src $pkg-$ver/libcxxabi
+
+$WORK/$archive_libcxxrt:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libcxxrt > $archive_libcxxrt
+	printf "%s  %s\n" "$sha256sum_libcxxrt" "$archive_libcxxrt" | sha256sum -c
+
+$WORK/$archive_libcxx:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libcxx > $archive_libcxx
+	printf "%s  %s\n" "$sha256sum_libcxx" "$archive_libcxx" | sha256sum -c
+
+$WORK/$archive_libcxxabi:Q:
+	mkdir -p $WORK
+	cd $WORK
+	curl -k -L# $url_libcxxabi > $archive_libcxxabi
+	printf "%s  %s\n" "$sha256sum_libcxxabi" "$archive_libcxxabi" | sha256sum -c
+
+# delete everything but the pack
+clean:V:
+	rm -rf $WORK
+	rm -rf $destdir
+
+# remove the pack
+distclean:V: clean
+	rm -f $tarball

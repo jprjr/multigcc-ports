@@ -1,0 +1,28 @@
+pkg = x86_64-w64-mingw32-cmake
+ver = 0.0.0
+
+<../config.mk
+
+srcdir = `{pwd}
+destdir = `{printf '%s/%s/' "$STAGE" "$pkg-$ver"}
+tarball = ${REPO}/$pkg@$ver.tgz
+
+$tarball:Q: build-files
+	cd $destdir
+	find . -printf '%P\0' | LC_ALL=C sort -z | \
+	GZIP=-9n ${TAR} --null --no-recursion --files-from=- --owner=root --group=root --numeric-owner \
+	--mode=go=rX,u+rw,a-s -czf $tarball
+
+build-files: build-fs
+	cp $srcdir/files/x86_64-w64-mingw32-cmake $destdir/usr/bin
+	cp $srcdir/files/x86_64-w64-mingw32-conf.cmake $destdir/usr/share/cmake
+
+build-fs:QV:
+		mkdir -p $destdir/usr/bin
+		mkdir -p $destdir/usr/share/cmake
+
+clean:V:
+	rm -rf $pkg-$ver
+
+distclean:V: clean
+	rm -f ${REPO}/$pkg@$ver.tbz2

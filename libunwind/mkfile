@@ -1,0 +1,30 @@
+pkg = libunwind
+ver = 5.0.1
+url= http://releases.llvm.org/$ver/libunwind-$ver.src.tar.xz
+
+sha256sum = 6bbfbf6679435b858bd74bdf080386d084a76dfbf233fb6e47b2c28e0872d0fe
+
+<../default.mk
+
+build:V: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g0 -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DLIBUNWIND_ENABLE_SHARED=OFF \
+		..
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/build
+	make -j${NPROC} DESTDIR=$destdir install
+

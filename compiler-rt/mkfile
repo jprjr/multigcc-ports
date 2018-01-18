@@ -1,0 +1,32 @@
+pkg = compiler-rt
+ver = 5.0.1
+url= http://releases.llvm.org/$ver/compiler-rt-$ver.src.tar.xz
+
+sha256sum = 4edd1417f457a9b3f0eb88082530490edf3cf6a7335cdce8ecbc5d3e16a895da
+
+<../default.mk
+
+build:V: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_C_COMPILER=clang \
+		-DCMAKE_CXX_COMPILER=clang++ \
+		-DCMAKE_C_FLAGS="-g0 -Os" \
+		-DCMAKE_CXX_FLAGS="-g0 -Os" \
+		-DCMAKE_SKIP_RPATH=ON \
+		-DCOMPILER_RT_INSTALL_PATH="/usr/lib/clang/$ver" \
+		-DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+		-DCOMPILER_RT_BUILD_XRAY=OFF \
+		..
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/build
+	make -j${NPROC} DESTDIR=$destdir install
+
