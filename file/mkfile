@@ -1,0 +1,6 @@
+pkg = file
+ver = 5.32
+url = ftp://ftp.astron.com/pub/file/file-${ver}.tar.gz
+sha256sum = 8639dc4d1b21e232285cd483604afc4a6ee810710e00e579dbe9591681722b50
+
+<../default.mk

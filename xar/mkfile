@@ -1,0 +1,8 @@
+pkg = xar
+ver = 1.6.1
+url = https://github.com/downloads/mackyle/xar/xar-$ver.tar.gz
+sha256sum = ee46089968457cf710b8cf1bdeb98b7ef232eb8a4cdeb34502e1f16ef4d2153e
+
+<../default.mk
+
+LIBS = -lfts

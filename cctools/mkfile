@@ -4,11 +4,14 @@ _commit = 43062856c573d9696764e423373f8943a3747b35
 url = https://github.com/jprjr/cctools-port/archive/43062856c573d9696764e423373f8943a3747b35.tar.gz
 sha256sum = a1296c4286272ec7f9bd807070dbd636fa32e4229c1f2880badd693e12059095
 
+# ld version = 274.2
+
 <../default.mk
 
 CONFIGURE = --prefix=/usr --target=x86_64-apple-darwin14 \
   --host=x86_64-pc-linux-musl \
-  --build=x86_64-pc-linux-musl
+  --build=x86_64-pc-linux-musl \
+  --bindir=/usr/bin
 
 build:V: fetch patch
 	cd $WORK/$pkg-$ver/cctools
@@ -16,68 +19,14 @@ build:V: fetch patch
 	test -f configure && CC="clang" CXX="clang++" ./configure $CONFIGURE
 	make -j${NPROC}
 
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
 install:QV: build
 	mkdir -p $destdir
 	cd $WORK/$pkg-$ver/cctools
 	make -j${NPROC} DESTDIR=$destdir install
-	cd $destdir/usr/bin
-	ln -s x86_64-apple-darwin14-ObjectDump        x86_64h-apple-darwin14-ObjectDump
-	ln -s x86_64-apple-darwin14-ar                x86_64h-apple-darwin14-ar
-	ln -s x86_64-apple-darwin14-as                x86_64h-apple-darwin14-as
-	ln -s x86_64-apple-darwin14-bitcode_strip     x86_64h-apple-darwin14-bitcode_strip
-	ln -s x86_64-apple-darwin14-check_dylib       x86_64h-apple-darwin14-check_dylib
-	ln -s x86_64-apple-darwin14-checksyms         x86_64h-apple-darwin14-checksyms
-	ln -s x86_64-apple-darwin14-cmpdylib          x86_64h-apple-darwin14-cmpdylib
-	ln -s x86_64-apple-darwin14-codesign_allocate x86_64h-apple-darwin14-codesign_allocate
-	ln -s x86_64-apple-darwin14-ctf_insert        x86_64h-apple-darwin14-ctf_insert
-	ln -s x86_64-apple-darwin14-dyldinfo          x86_64h-apple-darwin14-dyldinfo
-	ln -s x86_64-apple-darwin14-indr              x86_64h-apple-darwin14-indr
-	ln -s x86_64-apple-darwin14-inout             x86_64h-apple-darwin14-inout
-	ln -s x86_64-apple-darwin14-install_name_tool x86_64h-apple-darwin14-install_name_tool
-	ln -s x86_64-apple-darwin14-ld                x86_64h-apple-darwin14-ld
-	ln -s x86_64-apple-darwin14-libtool           x86_64h-apple-darwin14-libtool
-	ln -s x86_64-apple-darwin14-lipo              x86_64h-apple-darwin14-lipo
-	ln -s x86_64-apple-darwin14-machocheck        x86_64h-apple-darwin14-machocheck
-	ln -s x86_64-apple-darwin14-nm                x86_64h-apple-darwin14-nm
-	ln -s x86_64-apple-darwin14-nmedit            x86_64h-apple-darwin14-nmedit
-	ln -s x86_64-apple-darwin14-otool             x86_64h-apple-darwin14-otool
-	ln -s x86_64-apple-darwin14-pagestuff         x86_64h-apple-darwin14-pagestuff
-	ln -s x86_64-apple-darwin14-ranlib            x86_64h-apple-darwin14-ranlib
-	ln -s x86_64-apple-darwin14-redo_prebinding   x86_64h-apple-darwin14-redo_prebinding
-	ln -s x86_64-apple-darwin14-seg_addr_table    x86_64h-apple-darwin14-seg_addr_table
-	ln -s x86_64-apple-darwin14-seg_hack          x86_64h-apple-darwin14-seg_hack
-	ln -s x86_64-apple-darwin14-segedit           x86_64h-apple-darwin14-segedit
-	ln -s x86_64-apple-darwin14-size              x86_64h-apple-darwin14-size
-	ln -s x86_64-apple-darwin14-strings           x86_64h-apple-darwin14-strings
-	ln -s x86_64-apple-darwin14-strip             x86_64h-apple-darwin14-strip
-	ln -s x86_64-apple-darwin14-unwinddump        x86_64h-apple-darwin14-unwinddump
-	ln -s x86_64-apple-darwin14-ObjectDump        i386-apple-darwin14-ObjectDump
-	ln -s x86_64-apple-darwin14-ar                i386-apple-darwin14-ar
-	ln -s x86_64-apple-darwin14-as                i386-apple-darwin14-as
-	ln -s x86_64-apple-darwin14-bitcode_strip     i386-apple-darwin14-bitcode_strip
-	ln -s x86_64-apple-darwin14-check_dylib       i386-apple-darwin14-check_dylib
-	ln -s x86_64-apple-darwin14-checksyms         i386-apple-darwin14-checksyms
-	ln -s x86_64-apple-darwin14-cmpdylib          i386-apple-darwin14-cmpdylib
-	ln -s x86_64-apple-darwin14-codesign_allocate i386-apple-darwin14-codesign_allocate
-	ln -s x86_64-apple-darwin14-ctf_insert        i386-apple-darwin14-ctf_insert
-	ln -s x86_64-apple-darwin14-dyldinfo          i386-apple-darwin14-dyldinfo
-	ln -s x86_64-apple-darwin14-indr              i386-apple-darwin14-indr
-	ln -s x86_64-apple-darwin14-inout             i386-apple-darwin14-inout
-	ln -s x86_64-apple-darwin14-install_name_tool i386-apple-darwin14-install_name_tool
-	ln -s x86_64-apple-darwin14-ld                i386-apple-darwin14-ld
-	ln -s x86_64-apple-darwin14-libtool           i386-apple-darwin14-libtool
-	ln -s x86_64-apple-darwin14-lipo              i386-apple-darwin14-lipo
-	ln -s x86_64-apple-darwin14-machocheck        i386-apple-darwin14-machocheck
-	ln -s x86_64-apple-darwin14-nm                i386-apple-darwin14-nm
-	ln -s x86_64-apple-darwin14-nmedit            i386-apple-darwin14-nmedit
-	ln -s x86_64-apple-darwin14-otool             i386-apple-darwin14-otool
-	ln -s x86_64-apple-darwin14-pagestuff         i386-apple-darwin14-pagestuff
-	ln -s x86_64-apple-darwin14-ranlib            i386-apple-darwin14-ranlib
-	ln -s x86_64-apple-darwin14-redo_prebinding   i386-apple-darwin14-redo_prebinding
-	ln -s x86_64-apple-darwin14-seg_addr_table    i386-apple-darwin14-seg_addr_table
-	ln -s x86_64-apple-darwin14-seg_hack          i386-apple-darwin14-seg_hack
-	ln -s x86_64-apple-darwin14-segedit           i386-apple-darwin14-segedit
-	ln -s x86_64-apple-darwin14-size              i386-apple-darwin14-size
-	ln -s x86_64-apple-darwin14-strings           i386-apple-darwin14-strings
-	ln -s x86_64-apple-darwin14-strip             i386-apple-darwin14-strip
-	ln -s x86_64-apple-darwin14-unwinddump        i386-apple-darwin14-unwinddump
+	cp $srcdir/wrappers/clang $destdir/usr/bin/x86_64-apple-darwin14-clang
+	cp $srcdir/wrappers/clang++ $destdir/usr/bin/x86_64-apple-darwin14-clang++
+	cp $srcdir/wrappers/clang++-libc++ $destdir/usr/bin/x86_64-apple-darwin14-clang++-libc++
+	mkdir -p $destdir/usr/apple/SDK
+

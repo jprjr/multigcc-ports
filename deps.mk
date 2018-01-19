@@ -4,7 +4,7 @@ automake:V: autoconf
 bash:V: readline ncurses
 binutils:V: zlib
 boost:V: python zlib bzip2 xz
-cctools:V: musl-fts
+cctools:V: musl-fts xar util-linux libtapi
 cmake:V: libarchive python curl
 compiler-rt:V: libcxx
 curl:V: libressl zlib ca-certificates
@@ -23,6 +23,7 @@ libregexp9:V: libutf libfmt
 libressl:V: linux-headers zlib musl
 libtool:V: help2man
 libunwind:V: cmake
+libxml2:V: zlib python
 llvm:V: cmake libffi compiler-rt libcxx libunwind
 mk:V: libutf libfmt libbio libregexp9
 musl:V: linux-headers
@@ -32,6 +33,8 @@ perl:V: zlib readline bzip2 libressl xz
 pigz:V: zlib
 python:V: zlib readline bzip2 libressl
 tar:V: pigz bzip2 xz
+util-linux:V: linux-headers
+xar:V: libressl libxml2 musl-fts
 x86_64-w64-mingw32-binutils:V: zlib gcc
 x86_64-w64-mingw32-boost:V: x86_64-w64-mingw32-gcc x86_64-w64-mingw32-bzip2 x86_64-w64-mingw32-zlib x86_64-w64-mingw32-xz
 x86_64-w64-mingw32-compiler-rt:V: x86_64-w64-mingw32-cmake

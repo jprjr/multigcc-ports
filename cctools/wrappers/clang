@@ -1,0 +1,23 @@
+#!/bin/sh
+
+target=$(basename "${0%-clang}")
+arch=$(echo "${target}" | cut -f1 -d'-')
+darwin=$(echo "${target}" | cut -f3 -d'-')
+
+case "$darwin" in
+    "darwin14")
+      sdk="10.10"
+      cxx="4.2.1"
+      ;;
+esac
+
+exec /usr/bin/clang \
+  -target "${target}" \
+  -mlinker-version=274.2 \
+  -isystem /usr/lib/clang/5.0.1/include \
+  -isysroot /usr/apple/SDK/MacOSX${sdk}.sdk \
+  -cxx-isystem /usr/apple/SDK/MacOSX${sdk}.sdk/usr/include/c++/${cxx} \
+  -cxx-isystem /usr/apple/SDK/MacOSX${sdk}.sdk/usr/include/c++/${cxx}/${target} \
+  -cxx-isystem /usr/apple/SDK/MacOSX${sdk}.sdk/usr/include/c++/${cxx}/backward \
+  -mmacosx-version-min=10.5.0 \
+  -arch ${arch} "$@"
