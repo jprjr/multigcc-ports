@@ -1,0 +1,21 @@
+pkg = pkgconf
+ver = 1.4.0
+url = https://github.com/pkgconf/pkgconf/archive/pkgconf-$ver.tar.gz
+sha256sum = 3cf32cac4abb47602fb18067f9aa60447427381ee0a77fda11ca4ebfb24ff95c
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	./autogen.sh
+	test -f configure && ./configure $CONFIGURE
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver
+	make -j${NPROC} DESTDIR=$destdir install
+	ln -s pkgconf $destdir/usr/bin/pkg-config
+

@@ -4,6 +4,7 @@ automake:V: autoconf
 bash:V: readline ncurses
 binutils:V: zlib
 boost:V: python zlib bzip2 xz
+cctools:V: musl-fts
 cmake:V: libarchive python curl
 compiler-rt:V: libcxx
 curl:V: libressl zlib ca-certificates
@@ -25,6 +26,7 @@ libunwind:V: cmake
 llvm:V: cmake libffi compiler-rt libcxx libunwind
 mk:V: libutf libfmt libbio libregexp9
 musl:V: linux-headers
+musl-fts:V: pkgconf musl
 pm:V: libarchive zlib bzip2 attr acl xz
 perl:V: zlib readline bzip2 libressl xz
 pigz:V: zlib

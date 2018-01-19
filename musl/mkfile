@@ -6,5 +6,3 @@ sha256sum = d017ee5d01aec0c522a1330fdff06b1e428cb409e1db819cc4935d5da4a5a118
 
 <../default.mk
 
-cleanup:QV: install
-	true
