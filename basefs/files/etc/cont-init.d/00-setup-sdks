@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# darwin13 = 10.9
+# darwin14 = 10.10
+# darwin15 = 10.11
+# darwin16 = 10.12
+# darwin17 = 10.13
+
+if [[ -f /opt/sdk/MacOSX10.9.sdk.tar.xz ]] ; then
+    tar xf /opt/sdk/MacOSX10.9.sdk.tar.xz -C /opt/sdk
+fi
+
+if [[ -f /opt/sdk/MacOSX10.10.sdk.tar.xz ]] ; then
+    tar xf /opt/sdk/MacOSX10.10.sdk.tar.xz -C /opt/sdk
+fi
+
+if [[ -f /opt/sdk/MacOSX10.11.sdk.tar.xz ]] ; then
+    tar xf /opt/sdk/MacOSX10.11.sdk.tar.xz -C /opt/sdk
+fi
+
+if [[ -f /opt/sdk/MacOSX10.12.sdk.tar.xz ]] ; then
+    tar xf /opt/sdk/MacOSX10.12.sdk.tar.xz -C /opt/sdk
+fi
+
+if [[ -f /opt/sdk/MacOSX10.13.sdk.tar.xz ]] ; then
+    tar xf /opt/sdk/MacOSX10.13.sdk.tar.xz -C /opt/sdk
+fi
+
+cd /opt/sdk
+
+if [[ -d MacOSX10.9.sdk ]] ; then
+    stow -t /usr/x86_64-apple-darwin13 --no-folding MacOSX10.9.sdk
+fi
+
+if [[ -d MacOSX10.10.sdk ]] ; then
+    stow -t /usr/x86_64-apple-darwin14 --no-folding MacOSX10.10.sdk
+fi
+
+if [[ -d MacOSX10.11.sdk ]] ; then
+    stow -t /usr/x86_64-apple-darwin15 --no-folding MacOSX10.11.sdk
+fi
+
+if [[ -d MacOSX10.12.sdk ]] ; then
+    stow -t /usr/x86_64-apple-darwin16 --no-folding MacOSX10.12.sdk
+fi
+
+if [[ -d MacOSX10.13.sdk ]] ; then
+    stow -t /usr/x86_64-apple-darwin17 --no-folding MacOSX10.13.sdk
+fi

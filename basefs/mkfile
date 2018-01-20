@@ -27,6 +27,7 @@ build-files: build-fs
 	cp $srcdir/files/etc/profile $destdir/etc/profile
 	cp $srcdir/files/etc/resolv.conf $destdir/etc/resolv.conf
 	cp $srcdir/files/etc/shells $destdir/etc/shells
+	cp $srcdir/files/etc/cont-init.d/00-setup-sdks $destdir/etc/cont-init.d/00-setup-sdks
 
 build-fs:QV:
         for dir in etc dev sys proc tmp usr src var ; do
@@ -38,6 +39,7 @@ build-fs:QV:
         for vardir in run log lock tmp cache db ; do
                 mkdir -p $destdir/var/$vardir
         done
+		mkdir -p $destdir/etc/cont-init.d
 
 
 clean:V:
