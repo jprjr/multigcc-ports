@@ -1,9 +1,9 @@
-pkg = x86_64-apple-darwin14-cctools
+pkg = x86_64-apple-darwin15-cctools
 
 <../x86_64-apple-darwin14-cctools/common.mk
 <../default.mk
 
-CONFIGURE = --prefix=/usr --target=x86_64-apple-darwin14 \
+CONFIGURE = --prefix=/usr --target=x86_64-apple-darwin15 \
   --host=x86_64-pc-linux-musl \
   --build=x86_64-pc-linux-musl \
   --bindir=/usr/bin
@@ -20,13 +20,13 @@ install:QV: build
 	mkdir -p $destdir
 	cd $WORK/$pkg-$ver/cctools
 	make -j${NPROC} DESTDIR=$destdir install
-	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang $destdir/usr/bin/x86_64-apple-darwin14-clang
-	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang++ $destdir/usr/bin/x86_64-apple-darwin14-clang++
-	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang++-libstdc++ $destdir/usr/bin/x86_64-apple-darwin14-clang++-libstdc++
+	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang $destdir/usr/bin/x86_64-apple-darwin15-clang
+	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang++ $destdir/usr/bin/x86_64-apple-darwin15-clang++
+	cp $srcdir/../x86_64-apple-darwin14-cctools/wrappers/clang++-libstdc++ $destdir/usr/bin/x86_64-apple-darwin15-clang++-libstdc++
 	cd $destdir/usr/bin
-	for f in x86_64-apple-darwin14-* ; do
+	for f in x86_64-apple-darwin15-* ; do
 		ln -s "$f" "x86_64h-${f#x86_64-}"
 		ln -s "$f" "i386-${f#x86_64-}"
 	done
-	mkdir -p $destdir/usr/x86_64-apple-darwin14
+	mkdir -p $destdir/usr/x86_64-apple-darwin15
 
