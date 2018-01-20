@@ -1,0 +1,9 @@
+pkg = nghttp2
+ver = 1.29.0
+url = https://github.com/nghttp2/nghttp2/releases/download/v$ver/nghttp2-$ver.tar.xz
+sha256sum = a7a1b18be57be6a53a7739988ea27d6ec9209e7b0e8372b8483cd911d7838739
+
+<../default.mk
+
+CONFIGURE = $CONFIGURE --disable-examples --disable-python-bindings --enable-lib-only
+

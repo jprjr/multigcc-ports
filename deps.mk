@@ -6,7 +6,7 @@ binutils:V: zlib
 boost:V: python zlib bzip2 xz
 cmake:V: libarchive python curl
 compiler-rt:V: libcxx
-curl:V: libressl zlib ca-certificates
+curl:V: libressl zlib ca-certificates nghttp2
 dash:V: autoconf
 execline:V: skalibs
 gcc:V: binutils libmpc libisl musl zlib
