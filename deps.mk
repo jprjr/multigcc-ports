@@ -38,6 +38,7 @@ s6-networking:V: skalibs execline s6 s6-dns libressl
 s6-overlay: skalibs s6 s6-dns s6-networking s6-portable-utils s6-linux-utils execline
 s6-portable-utils:V: skalibs
 s6-linux-utils:V: skalibs
+stow:V: perl
 tar:V: pigz bzip2 xz
 util-linux:V: linux-headers
 xar:V: libressl libxml2 musl-fts

@@ -1,0 +1,7 @@
+pkg = stow
+ver = 2.2.2
+url = https://ftp.gnu.org/gnu/stow/stow-${ver}.tar.bz2
+sha256sum = a0022034960e47a8d23dffb822689f061f7a2d9101c9835cf11bf251597aa6fd
+
+<../default.mk
+
