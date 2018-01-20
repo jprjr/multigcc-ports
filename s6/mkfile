@@ -1,0 +1,6 @@
+pkg = s6
+ver = 2.7.0.0
+url = http://skarnet.org/software/s6/s6-${ver}.tar.gz
+sha256sum = 6617cbf82c73273c67c6102a1a5c48449ef65ffbe8d0db6a587b7f0078dc6e13
+
+<../default.mk

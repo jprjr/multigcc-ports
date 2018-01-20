@@ -1,0 +1,6 @@
+pkg = s6-dns
+ver = 2.3.0.0
+url = http://skarnet.org/software/s6-dns/s6-dns-${ver}.tar.gz
+sha256sum = a828583e48741927c88de3822283c317c792ffc15d5e9043f29625b87ba38740
+
+<../default.mk

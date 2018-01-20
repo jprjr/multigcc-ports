@@ -1,6 +1,6 @@
 #!/bin/sh
 
-target=$(basename "${0%-clang}")
+target=$(basename "${0%-clang++}")
 arch=$(echo "${target}" | cut -f1 -d'-')
 darwin=$(echo "${target}" | cut -f3 -d'-')
 
@@ -10,11 +10,12 @@ case "$darwin" in
       ;;
 esac
 
-exec /usr/bin/clang \
+exec /usr/bin/clang++ \
   -target "${target}" \
   -mlinker-version=274.2 \
   -isystem /usr/lib/clang/5.0.1/include \
-  -isysroot /usr/${target}/
+  -isysroot /usr/${target} \
+  -stdlib=libstdc++ \
   -cxx-isystem /usr/${target}/usr/include/c++/${cxx} \
   -cxx-isystem /usr/${target}/usr/include/c++/${cxx}/${target} \
   -cxx-isystem /usr/${target}/usr/include/c++/${cxx}/backward \

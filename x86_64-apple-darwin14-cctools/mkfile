@@ -1,0 +1,32 @@
+pkg = x86_64-apple-darwin14-cctools
+
+<../cctools/common.mk
+<../default.mk
+
+CONFIGURE = --prefix=/usr --target=x86_64-apple-darwin14 \
+  --host=x86_64-pc-linux-musl \
+  --build=x86_64-pc-linux-musl \
+  --bindir=/usr/bin
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver/cctools
+	./autogen.sh
+	test -f configure && CC="clang" CXX="clang++" ./configure $CONFIGURE
+	make -j${NPROC}
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir
+	cd $WORK/$pkg-$ver/cctools
+	make -j${NPROC} DESTDIR=$destdir install
+	cp $srcdir/../cctools/wrappers/clang $destdir/usr/bin/x86_64-apple-darwin14-clang
+	cp $srcdir/../cctools/wrappers/clang++ $destdir/usr/bin/x86_64-apple-darwin14-clang++
+	cp $srcdir/../cctools/wrappers/clang++-libstdc++ $destdir/usr/bin/x86_64-apple-darwin14-clang++-libstdc++
+	cd $destdir/usr/bin
+	for f in x86_64-apple-darwin14-* ; do
+		ln -s "$f" "x86_64h-${f#x86_64-}"
+		ln -s "$f" "i386-${f#x86_64-}"
+	done
+	mkdir -p $destdir/usr/x86_64-apple-darwin14
+

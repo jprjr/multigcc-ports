@@ -1,0 +1,8 @@
+pkg = s6-networking
+ver = 2.3.0.2
+url = http://skarnet.org/software/s6-networking/s6-networking-${ver}.tar.gz
+sha256sum = d81968756abbcecde6a872c89d82f643cd621a0c295c2c57650705dbe875481a
+
+<../default.mk
+
+CONFIGURE = $CONFIGURE --enable-ssl=libressl
