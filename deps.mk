@@ -42,10 +42,21 @@ stow:V: perl
 tar:V: pigz bzip2 xz
 util-linux:V: linux-headers
 xar:V: libressl libxml2 musl-fts
+arm-linux-musleabi-binutils:V: zlib gcc
+arm-linux-musleabi-gcc:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc
+arm-linux-musleabi-musl:V: arm-linux-musleabi-binutils
+arm-linux-musleabi-zlib:V: arm-linux-musleabi-gcc
+arm-linux-musleabihf-binutils:V: zlib gcc
+arm-linux-musleabihf-gcc:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc
+arm-linux-musleabihf-musl:V: arm-linux-musleabihf-binutils
+arm-linux-musleabihf-zlib:V: arm-linux-musleabihf-gcc
+i486-pc-linux-musl-binutils:V: zlib gcc
+i486-pc-linux-musl-gcc:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc
+i486-pc-linux-musl-musl:V: i486-pc-linux-musl-binutils
+i486-pc-linux-musl-zlib:V: i486-pc-linux-musl-gcc
 x86_64-apple-darwin14-cctools:V: musl-fts xar util-linux libtapi
 x86_64-w64-mingw32-binutils:V: zlib gcc
 x86_64-w64-mingw32-boost:V: x86_64-w64-mingw32-gcc x86_64-w64-mingw32-bzip2 x86_64-w64-mingw32-zlib x86_64-w64-mingw32-xz
-x86_64-w64-mingw32-compiler-rt:V: x86_64-w64-mingw32-cmake
 x86_64-w64-mingw32-mingw:V: x86_64-w64-mingw32-binutils
 x86_64-w64-mingw32-gcc:V: zlib libmpc libisl x86_64-w64-mingw32-binutils x86_64-w64-mingw32-mingw gcc
 x86_64-w64-mingw32-zlib:V: x86_64-w64-mingw32-gcc

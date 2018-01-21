@@ -1,0 +1,46 @@
+pkg = i486-pc-linux-musl-gcc
+ver = 4.9.4
+url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.bz2
+
+sha256sum = 6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092
+
+<../default.mk
+
+CONFIGURE = \
+	--build=$CHOST \
+    --target=i486-pc-linux-musl \
+	--host=$CHOST \
+	--prefix=/usr \
+	--with-system-zlib \
+	--disable-nls \
+	--disable-multilib \
+	--disable-libquadmath \
+	--disable-werror \
+	--enable-tls \
+	--enable-deterministic-archives \
+	--disable-libmudflap \
+	--disable-libsanitizer \
+	--disable-gnu-indirect-function \
+	--disable-libmpx \
+	--enable-libstdcxx-time \
+	--enable-languages=c,c++ \
+	--enable-__cxa_atexit
+
+build:QV: fetch patch
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	../configure $CONFIGURE
+	make -j${NPROC}
+
+install:QV: build
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $destdir/usr/i486-pc-linux-musl
+	ln -s lib $destdir/usr/i486-pc-linux-musl/lib64
+	ln -s lib $destdir/usr/i486-pc-linux-musl/lib32
+	cd $WORK/$pkg-$ver/build
+	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man
+
