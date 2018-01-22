@@ -1,5 +1,5 @@
 TRIPLET = x86_64-pc-linux-musl
-TOOLCHAIN = 
+TOOLCHAIN =
 
 STAGE   = /var/cache/buildroot/stage
 REPO    = /var/cache/repo

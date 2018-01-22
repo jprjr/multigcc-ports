@@ -7,6 +7,12 @@ sha256sum = d017ee5d01aec0c522a1330fdff06b1e428cb409e1db819cc4935d5da4a5a118
 <../default.mk
 
 CONFIGURE = --target=arm-linux-musleabi \
-  --host=x86_64-pc-linux-musl \
+  --build=x86_64-pc-linux-musl \
   --prefix=/usr
+
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver
+	test -f configure && CROSS_COMPILE=arm-linux-musleabi- CC=arm-linux-musleabi-gcc ./configure $CONFIGURE
+	make -j${NPROC}
 

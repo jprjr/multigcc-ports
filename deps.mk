@@ -44,15 +44,12 @@ util-linux:V: linux-headers
 xar:V: libressl libxml2 musl-fts
 arm-linux-musleabi-binutils:V: zlib gcc
 arm-linux-musleabi-gcc:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc
-arm-linux-musleabi-musl:V: arm-linux-musleabi-binutils
 arm-linux-musleabi-zlib:V: arm-linux-musleabi-gcc
 arm-linux-musleabihf-binutils:V: zlib gcc
 arm-linux-musleabihf-gcc:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc
-arm-linux-musleabihf-musl:V: arm-linux-musleabihf-binutils
 arm-linux-musleabihf-zlib:V: arm-linux-musleabihf-gcc
 i486-pc-linux-musl-binutils:V: zlib gcc
 i486-pc-linux-musl-gcc:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc
-i486-pc-linux-musl-musl:V: i486-pc-linux-musl-binutils
 i486-pc-linux-musl-zlib:V: i486-pc-linux-musl-gcc
 x86_64-apple-darwin14-cctools:V: musl-fts xar util-linux libtapi
 x86_64-w64-mingw32-binutils:V: zlib gcc
