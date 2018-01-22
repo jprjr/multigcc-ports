@@ -8,7 +8,8 @@ sha256sum = d017ee5d01aec0c522a1330fdff06b1e428cb409e1db819cc4935d5da4a5a118
 
 CONFIGURE = --target=arm-linux-musleabihf \
   --build=x86_64-pc-linux-musl \
-  --prefix=/usr
+  --prefix=/usr/arm-linux-musleabihf \
+  --syslibdir=/usr/arm-linux-musleabihf/lib
 
 build:V: fetch patch
 	cd $WORK/$pkg-$ver
