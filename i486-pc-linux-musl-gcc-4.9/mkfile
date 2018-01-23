@@ -1,4 +1,4 @@
-pkg = i486-pc-linux-musl-gcc
+pkg = i486-pc-linux-musl-gcc-4.9
 ver = 4.9.4
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.bz2
 

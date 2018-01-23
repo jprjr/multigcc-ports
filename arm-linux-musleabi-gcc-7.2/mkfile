@@ -1,4 +1,4 @@
-pkg = arm-linux-musleabi-gcc
+pkg = arm-linux-musleabi-gcc-7.2
 ver = 7.2.0
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
 

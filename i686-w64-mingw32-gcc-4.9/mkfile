@@ -1,4 +1,4 @@
-pkg = i686-w64-mingw32-gcc
+pkg = i686-w64-mingw32-gcc-4.9
 ver = 4.9.4
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.bz2
 

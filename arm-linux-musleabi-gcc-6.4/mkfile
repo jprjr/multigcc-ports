@@ -1,4 +1,4 @@
-pkg = arm-linux-musleabi-gcc
+pkg = arm-linux-musleabi-gcc-6.4
 ver = 6.4.0
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
 

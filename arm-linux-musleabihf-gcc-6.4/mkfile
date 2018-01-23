@@ -1,4 +1,4 @@
-pkg = arm-linux-musleabihf-gcc
+pkg = arm-linux-musleabihf-gcc-6.4
 ver = 6.4.0
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
 
@@ -8,6 +8,7 @@ sha256sum = 850bf21eafdfe5cd5f6827148184c08c4a0852a37ccf36ce69855334d2c914d4
 
 CONFIGURE = \
 	--build=$CHOST \
+	--with-float=hard \
     --target=arm-linux-musleabihf \
 	--host=$CHOST \
 	--prefix=/usr \

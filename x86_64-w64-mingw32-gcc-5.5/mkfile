@@ -1,4 +1,4 @@
-pkg = x86_64-w64-mingw32-gcc
+pkg = x86_64-w64-mingw32-gcc-5.5
 ver = 5.5.0
 url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
 
