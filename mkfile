@@ -203,8 +203,7 @@ bootstrap:QV: \
 	tar \
 	which \
 	xz \
-	skaware \
-	skaware \
+	skalibs \
 	s6 \
 	s6-dns \
 	s6-linux-utils \
