@@ -58,8 +58,8 @@ arm-linux-musleabihf-gcc-5:V: arm-linux-musleabihf-binutils arm-linux-musleabihf
 arm-linux-musleabihf-gcc-6:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-6
 arm-linux-musleabihf-gcc-7:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-7
 i486-pc-linux-musl-binutils:V: zlib
-i486-pc-linux-musl-musl:V: i486-pc-linux-musl-headers
-i486-pc-linux-musl-gcc-4:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-4
+i486-pc-linux-musl-musl:V: i486-pc-linux-musl-linux-headers
+i486-pc-linux-musl-gcc-4:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl
 i486-pc-linux-musl-gcc-5:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-5
 i486-pc-linux-musl-gcc-6:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-6
 i486-pc-linux-musl-gcc-7:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-7
