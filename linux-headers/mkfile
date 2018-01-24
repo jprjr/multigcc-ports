@@ -1,9 +1,5 @@
 pkg = linux-headers
-ver = 4.4.10
-url = https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.10.tar.xz
-
-sha256sum = 4ac22e4a619417213cfdab24714413bb9118fbaebe6012c6c89c279cdadef2ce
-
+<shared
 <../default.mk
 
 build:QV: fetch patch

@@ -46,16 +46,19 @@ tar:V: pigz bzip2 xz
 util-linux:V: linux-headers
 xar:V: libressl libxml2 musl-fts
 arm-linux-musleabi-binutils:V: zlib
+arm-linux-musleabi-musl:V: arm-linux-musleabi-linux-headers
 arm-linux-musleabi-gcc-4:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc-4
 arm-linux-musleabi-gcc-5:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc-5
 arm-linux-musleabi-gcc-6:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc-6
 arm-linux-musleabi-gcc-7:V: arm-linux-musleabi-binutils arm-linux-musleabi-musl zlib libmpc libisl gcc-7
 arm-linux-musleabihf-binutils:V: zlib
+arm-linux-musleabihf-musl:V: arm-linux-musleabihf-linux-headers
 arm-linux-musleabihf-gcc-4:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-4
 arm-linux-musleabihf-gcc-5:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-5
 arm-linux-musleabihf-gcc-6:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-6
 arm-linux-musleabihf-gcc-7:V: arm-linux-musleabihf-binutils arm-linux-musleabihf-musl zlib libmpc libisl gcc-7
 i486-pc-linux-musl-binutils:V: zlib
+i486-pc-linux-musl-musl:V: i486-pc-linux-musl-headers
 i486-pc-linux-musl-gcc-4:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-4
 i486-pc-linux-musl-gcc-5:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-5
 i486-pc-linux-musl-gcc-6:V: i486-pc-linux-musl-binutils i486-pc-linux-musl-musl zlib libmpc libisl gcc-6
