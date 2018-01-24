@@ -15,14 +15,10 @@ all:QV: ${ALL}
 
 gcc4:QV:
 	mk gcc-4
-	mk arm-linux-musleabi-gcc-4
-	mk arm-linux-musleabihf-gcc-4
 	mk i486-pc-linux-musl-gcc-4
 	mk i686-w64-mingw32-gcc-4
 	mk x86_64-w64-mingw32-gcc-4
 	pm -vaf ${REPO}/gcc-4@4.9.4.tgz
-	pm -vaf ${REPO}/arm-linux-musleabi-gcc-4@4.9.4.tgz
-	pm -vaf ${REPO}/arm-linux-musleabihf-gcc-4@4.9.4.tgz
 	pm -vaf ${REPO}/i486-pc-linux-musl-gcc-4@4.9.4.tgz
 	pm -vaf ${REPO}/i686-w64-mingw32-gcc-4@4.9.4.tgz
 	pm -vaf ${REPO}/x86_64-w64-mingw32-gcc-4@4.9.4.tgz
@@ -30,14 +26,10 @@ gcc4:QV:
 
 gcc5:QV:
 	mk gcc-5
-	mk arm-linux-musleabi-gcc-5
-	mk arm-linux-musleabihf-gcc-5
 	mk i486-pc-linux-musl-gcc-5
 	mk i686-w64-mingw32-gcc-5
 	mk x86_64-w64-mingw32-gcc-5
 	pm -vaf ${REPO}/gcc-5@5.5.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabi-gcc-5@5.5.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabihf-gcc-5@5.5.0.tgz
 	pm -vaf ${REPO}/i486-pc-linux-musl-gcc-5@5.5.0.tgz
 	pm -vaf ${REPO}/i686-w64-mingw32-gcc-5@5.5.0.tgz
 	pm -vaf ${REPO}/x86_64-w64-mingw32-gcc-5@5.5.0.tgz
@@ -45,28 +37,20 @@ gcc5:QV:
 
 gcc6:QV:
 	mk gcc-6
-	mk arm-linux-musleabi-gcc-6
-	mk arm-linux-musleabihf-gcc-6
 	mk i486-pc-linux-musl-gcc-6
 	mk i686-w64-mingw32-gcc-6
 	mk x86_64-w64-mingw32-gcc-6
 	pm -vaf ${REPO}/gcc-6@6.4.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabi-gcc-6@6.4.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabihf-gcc-6@6.4.0.tgz
 	pm -vaf ${REPO}/i486-pc-linux-musl-gcc-6@6.4.0.tgz
 	pm -vaf ${REPO}/i686-w64-mingw32-gcc-6@6.4.0.tgz
 	pm -vaf ${REPO}/x86_64-w64-mingw32-gcc-6@6.4.0.tgz
 
 gcc7:QV:
 	mk gcc-7
-	mk arm-linux-musleabi-gcc-7
-	mk arm-linux-musleabihf-gcc-7
 	mk i486-pc-linux-musl-gcc-7
 	mk i686-w64-mingw32-gcc-7
 	mk x86_64-w64-mingw32-gcc-7
 	pm -vaf ${REPO}/gcc-7@7.2.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabi-gcc-7@7.2.0.tgz
-	pm -vaf ${REPO}/arm-linux-musleabihf-gcc-7@7.2.0.tgz
 	pm -vaf ${REPO}/i486-pc-linux-musl-gcc-7@7.2.0.tgz
 	pm -vaf ${REPO}/i686-w64-mingw32-gcc-7@7.2.0.tgz
 	pm -vaf ${REPO}/x86_64-w64-mingw32-gcc-7@7.2.0.tgz
