@@ -1,0 +1,29 @@
+pkg = go
+ver = 1.9.3
+url = https://golang.org/dl/go1.9.3.src.tar.gz
+sha256sum = 4e3d0ad6e91e02efa77d54e86c8b9e34fbe1cbc2935b6d38784dca93331c47ae
+
+<../default.mk
+
+build:V: fetch patch
+	cd $WORK/$pkg-$ver/src
+	GOROOT_BOOTSTRAP=/usr/lib/go \
+	GOPATH="$WORK/$pkg-$ver" \
+	GOROOT="$WORK/$pkg-$ver" \
+	GOBIN="$WORK/$pkg-$ver/bin" \
+	GOROOT_FINAL="/usr/lib/go" \
+	./make.bash
+
+# install the pack to a .rootfs directory
+# this is where the "pack" target will chdir to create the pack
+install:QV: build
+	mkdir -p $destdir/usr/lib/go/bin
+	mkdir -p $destdir/usr/bin/
+	cd $WORK/$pkg-$ver
+	install -Dm755 bin/go $destdir/usr/lib/go/bin/go
+	install -Dm755 bin/gofmt $destdir/usr/lib/go/bin/gofmt
+	ln -sf /usr/lib/go/bin/go $destdir/usr/bin/go
+	ln -sf /usr/lib/go/bin/gofmt $destdir/usr/bin/gofmt
+	cp -a pkg lib src $destdir/usr/lib/go/
+
+

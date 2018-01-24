@@ -95,6 +95,7 @@ bootstrap-clean:QV:
 	rm -f ${REPO}/gawk@*.tgz
 	rm -f ${REPO}/gettext@*.tgz
 	rm -f ${REPO}/git@*.tgz
+	rm -f ${REPO}/go@*.tgz
 	rm -f ${REPO}/grep@*.tgz
 	rm -f ${REPO}/help2man@*.tgz
 	rm -f ${REPO}/libarchive@*.tgz
@@ -164,6 +165,7 @@ bootstrap:QV: \
 	gawk \
 	gettext \
 	git \
+	go \
 	grep \
 	help2man \
 	libarchive \
