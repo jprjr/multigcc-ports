@@ -1,0 +1,40 @@
+pkg = arm-linux-musleabi-gcc-7.2
+<../gcc-7/shared
+<../default.mk
+
+CONFIGURE = \
+	--build=$CHOST \
+    --target=arm-linux-musleabi \
+	--host=$CHOST \
+	--prefix=/usr \
+	--with-system-zlib \
+	--disable-nls \
+	--disable-multilib \
+	--disable-libquadmath \
+	--disable-werror \
+	--enable-tls \
+	--enable-deterministic-archives \
+	--disable-libmudflap \
+	--disable-libsanitizer \
+	--disable-gnu-indirect-function \
+	--disable-libmpx \
+	--enable-libstdcxx-time \
+	--enable-languages=c,c++ \
+	--enable-__cxa_atexit
+
+build:QV: fetch patch
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	../configure $CONFIGURE
+	make -j${NPROC}
+
+install:QV: build
+    unset CC CXX LD HOSTCC AR RANLIB STRIP
+	mkdir -p $destdir/usr/arm-linux-musleabi
+	cd $WORK/$pkg-$ver/build
+	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man
+

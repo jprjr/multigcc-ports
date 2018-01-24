@@ -1,0 +1,39 @@
+pkg = gcc-4
+<shared
+
+<../default.mk
+
+CONFIGURE = \
+	--build=$CHOST \
+    --target=$CHOST \
+	--host=$CHOST \
+	--prefix=/usr \
+	--libdir=/usr/lib \
+	--with-system-zlib \
+	--disable-nls \
+	--disable-multilib \
+	--disable-libquadmath \
+	--disable-werror \
+	--enable-tls \
+	--enable-deterministic-archives \
+	--disable-libmudflap \
+	--disable-libsanitizer \
+	--disable-gnu-indirect-function \
+	--disable-libmpx \
+	--enable-libstdcxx-time \
+	--enable-languages=c,c++ \
+	--enable-__cxa_atexit
+
+build:QV: fetch patch
+	mkdir -p $WORK/$pkg-$ver/build
+	cd $WORK/$pkg-$ver/build
+	../configure $CONFIGURE
+	make -j${NPROC}
+
+install:QV: build
+	cd $WORK/$pkg-$ver/build
+	make DESTDIR=$destdir install
+	rm -rf $destdir/usr/share/info
+	rm -rf $destdir/usr/share/locale
+	rm -rf $destdir/usr/share/man
+

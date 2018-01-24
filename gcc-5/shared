@@ -1,0 +1,4 @@
+ver = 5.5.0
+url =  https://ftp.gnu.org/gnu/gcc/gcc-$ver/gcc-$ver.tar.xz
+sha256sum = 530cea139d82fe542b358961130c69cfde8b3d14556370b65823d2f91f0ced87
+
