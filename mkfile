@@ -142,7 +142,6 @@ bootstrap-clean:QV:
 	rm -f ${REPO}/s6-portable-utils@*.tgz
 
 bootstrap:QV: \
-	basefs \
 	acl \
 	attr \
 	autoconf \
@@ -211,6 +210,7 @@ bootstrap:QV: \
 	s6-overlay \
 	s6-portable-utils \
 	zlib
+	mk basefs
 	for d in $prereq; do pm -vaf ${REPO}/${d}@*.tgz; done
 	echo bootstrapped
 
