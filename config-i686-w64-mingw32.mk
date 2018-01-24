@@ -3,6 +3,7 @@ TOOLCHAIN = ${TRIPLET}-
 
 STAGE   = /var/cache/buildroot/stage
 REPO    = /var/cache/repo
+SOURCES = /var/cache/sources
 WORK    = `{printf '/var/cache/buildroot/src/%s-%s' "$pkg" "$(id -u)"}
 NPROC   = 4
 

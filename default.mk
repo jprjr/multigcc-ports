@@ -76,10 +76,15 @@ fetch-archive:QV: $WORK/$archive
 		fi
 	fi
 
-$WORK/$archive:Q:
+$WORK/$archive:Q: $SOURCES/$archive
+	mkdir -p $WORK
+	cd $WORK
+	ln -s $SOURCES/$archive
+
+$SOURCES/$archive:Q:
 	if [ -n "$url" ]; then
-		mkdir -p $WORK
-		cd $WORK
+		mkdir -p $SOURCES
+		cd $SOURCES
 		curl -k -L# $url > $archive
 		printf "%s  %s\n" "$sha256sum" "$archive" | sha256sum -c
 	fi
