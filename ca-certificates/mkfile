@@ -7,7 +7,7 @@ sha256sum = 435ac8e816f5c10eaaf228d618445811c16a5e842e461cb087642b6265a36856
 
 install:QV: build
 	mkdir -p $destdir/etc/ca-certificates
-	cp -a $WORK/$archive $destdir/etc/ca-certificates/cacert.pem
+	cp -a $SOURCES/$archive $destdir/etc/ca-certificates/cacert.pem
 
 build:V: fetch patch
 	true
@@ -15,3 +15,5 @@ build:V: fetch patch
 fetch-archive:QV: $WORK/$archive
 	true
 
+$WORK/$archive:Q: $SOURCES/$archive
+	true
